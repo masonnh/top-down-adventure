@@ -9,6 +9,7 @@ const SPEED = 300.0
 var last_direction: Vector2 = Vector2.RIGHT
 var is_attacking: bool = false
 var hitbox_offset: Vector2
+var strength: int = 20
 
 
 func _ready() -> void:
@@ -102,3 +103,4 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 	if is_attacking and body.name.begins_with("Slime"):
 		print(body.name)
 		print("Hit")
+		body.take_damage(strength, position)

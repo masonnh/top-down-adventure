@@ -421,6 +421,9 @@ animations = [{
 "speed": 7.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k8ckf"]
+size = Vector2(10.5, 5.75)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8ib2y"]
 size = Vector2(15, 15)
 
@@ -431,8 +434,11 @@ script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1420032128]
 sprite_frames = SubResource("SpriteFrames_8ib2y")
-animation = &"attack_right"
-frame = 1
+animation = &"idle_right"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1036856398]
+position = Vector2(0, 4.125)
+shape = SubResource("RectangleShape2D_k8ckf")
 
 [node name="SwingSword" type="AudioStreamPlayer2D" parent="." unique_id=772045262]
 stream = ExtResource("3_qhqgy")
@@ -440,10 +446,17 @@ pitch_scale = 3.0
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1182503299]
 position = Vector2(7.5, -2.5)
+collision_mask = 2
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=821683475]
 shape = SubResource("RectangleShape2D_8ib2y")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2122132061]
+limit_left = 0
+limit_top = 0
+limit_right = 2304
+limit_bottom = 1664
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

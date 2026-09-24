@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://bsklygeeqxriy"]
 
 [ext_resource type="Texture2D" uid="uid://c5ww3k46kc7pu" path="res://assets/images/enemies/Slime_Green.png" id="1_371uh"]
+[ext_resource type="Script" uid="uid://ccq2pxaalibns" path="res://scripts/slime.gd" id="1_p2gj0"]
+[ext_resource type="AudioStream" uid="uid://dye6463yic3t0" path="res://assets/audio/hit_enemy.wav" id="3_n6pvg"]
+[ext_resource type="PackedScene" uid="uid://b5qgpewsa7r7d" path="res://scenes/health_bar.tscn" id="4_pjw23"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p2gj0"]
 atlas = ExtResource("1_371uh")
@@ -138,7 +141,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tyl0w")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"die",
 "speed": 8.0
 }, {
@@ -163,13 +166,34 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k8ckf"]
 size = Vector2(18, 16)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_k8ckf"]
+radius = 150.0
+
 [node name="Slime" type="CharacterBody2D" unique_id=1019792288]
 scale = Vector2(2, 2)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_p2gj0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=911988515]
 sprite_frames = SubResource("SpriteFrames_8ib2y")
-animation = &"idle"
+animation = &"die"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1193990682]
 shape = SubResource("RectangleShape2D_k8ckf")
+
+[node name="Sight" type="Area2D" parent="." unique_id=1138437716]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sight" unique_id=869547907]
+shape = SubResource("CircleShape2D_k8ckf")
+
+[node name="TakeDamage" type="AudioStreamPlayer2D" parent="." unique_id=1817163553]
+stream = ExtResource("3_n6pvg")
+pitch_scale = 0.75
+
+[node name="HealthBar" parent="." unique_id=1234488749 instance=ExtResource("4_pjw23")]
+position = Vector2(-9, 9)
+
+[connection signal="body_entered" from="Sight" to="." method="_on_sight_body_entered"]
+[connection signal="body_exited" from="Sight" to="." method="_on_sight_body_exited"]
