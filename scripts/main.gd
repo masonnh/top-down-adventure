@@ -1,6 +1,6 @@
 extends Node2D
 
-var level: int = 3 
+var level: int = 1
 var current_level_root: Node = null
 
 @onready var hud: CanvasLayer = $HUD
