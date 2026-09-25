@@ -31,6 +31,7 @@ func _setup_level(level_root: Node) -> void:
 	# Connect Player
 	var player = level_root.get_node("Player")
 	player.died.connect(_on_player_died)
+	$HUD.set_player(player)
 	
 	# Connect Exit
 	var exit = level_root.get_node_or_null("Exit")

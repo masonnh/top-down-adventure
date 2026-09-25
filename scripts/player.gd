@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+signal health_changed(new_health: int)
 signal died
 
 @onready var anim_spr: AnimatedSprite2D = $AnimatedSprite2D
@@ -130,6 +131,7 @@ func take_damage(amount: int) -> void:
 	take_damage_sound.play()
 	health -= amount
 	PlayerStats.health = health
+	health_changed.emit(health)
 	
 	if health <= 0:
 		die()
