@@ -169,6 +169,8 @@ size = Vector2(18, 16)
 [sub_resource type="CircleShape2D" id="CircleShape2D_k8ckf"]
 radius = 150.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ib2y"]
+
 [node name="Slime" type="CharacterBody2D" unique_id=1019792288]
 scale = Vector2(2, 2)
 collision_layer = 2
@@ -195,5 +197,15 @@ pitch_scale = 0.75
 [node name="HealthBar" parent="." unique_id=1234488749 instance=ExtResource("4_pjw23")]
 position = Vector2(-9, 9)
 
+[node name="Hitbox" type="Area2D" parent="." unique_id=1471327366]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=28869624]
+shape = SubResource("RectangleShape2D_8ib2y")
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=1833760871]
+
 [connection signal="body_entered" from="Sight" to="." method="_on_sight_body_entered"]
 [connection signal="body_exited" from="Sight" to="." method="_on_sight_body_exited"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_exited" from="Hitbox" to="." method="_on_hitbox_body_exited"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]

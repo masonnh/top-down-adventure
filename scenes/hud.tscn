@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bpuf12vxfmnpi"]
+
+[ext_resource type="Script" uid="uid://dho5kcnfkip7c" path="res://scripts/hud.gd" id="1_ahhtf"]
+
+[node name="HUD" type="CanvasLayer" unique_id=112357812]
+script = ExtResource("1_ahhtf")
+
+[node name="FadeOverlay" type="ColorRect" parent="." unique_id=794108322]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

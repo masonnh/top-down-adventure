@@ -1,7 +1,12 @@
 extends CharacterBody2D
+
+signal died
+
 @onready var anim_spr: AnimatedSprite2D = $AnimatedSprite2D
-@onready var swing_sword: AudioStreamPlayer2D = $SwingSword
+@onready var swing_sword_sound: AudioStreamPlayer2D = $SwingSword
 @onready var hitbox: Area2D = $Hitbox
+@onready var take_damage_sound: AudioStreamPlayer2D = $TakeDamage
+@onready var damage_cooldown: Timer = $DamageCooldown
 
 
 const SPEED = 300.0
@@ -9,15 +14,24 @@ const SPEED = 300.0
 var last_direction: Vector2 = Vector2.RIGHT
 var is_attacking: bool = false
 var hitbox_offset: Vector2
+var alive: bool = true
+var max_health: int
+var health: int
 var strength: int = 20
 
 
 func _ready() -> void:
+	health = PlayerStats.health
+	max_health = PlayerStats.max_health
 	hitbox_offset = hitbox.position
 
 
 func _physics_process(_delta: float) -> void:
 	hitbox.monitoring = false
+	
+	if !alive:
+		return
+	
 	if Input.is_action_just_pressed("attack") and not is_attacking:
 		attack()
 	
@@ -71,7 +85,7 @@ func play_animation(prefix: String, dir: Vector2) -> void:
 func attack() -> void:
 	is_attacking = true
 	hitbox.monitoring = true
-	swing_sword.play()
+	swing_sword_sound.play()
 	play_animation("attack", last_direction)
 
 
@@ -104,3 +118,28 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 		print(body.name)
 		print("Hit")
 		body.take_damage(strength, position)
+
+
+func take_damage(amount: int) -> void:
+	if !alive:
+		return
+	
+	if damage_cooldown.time_left > 0:
+		return
+	
+	take_damage_sound.play()
+	health -= amount
+	PlayerStats.health = health
+	
+	if health <= 0:
+		die()
+	
+	damage_cooldown.start()
+
+
+func die() -> void:
+	anim_spr.play("dying")
+	alive = false
+	await anim_spr.animation_finished
+	died.emit()
+	
